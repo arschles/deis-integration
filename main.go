@@ -10,6 +10,8 @@ import (
   "io/ioutil"
 )
 
+var validExpectations = map[string]struct{}{"exitcode": struct{}}
+
 func main() {
   testFolder := flag.String("folder", "./tests", "the folder that holds all of the tests")
   flag.Parse()
@@ -18,6 +20,7 @@ func main() {
   err := filepath.Walk(*testFolder, func(path string, info os.FileInfo, err error) error{
     if strings.HasSuffix(path, "-test.yaml") {
       fileNames = append(fileNames, path)
+      log.Printf("Found file %s", path)
     }
     return nil
   })
@@ -42,8 +45,11 @@ func main() {
   }
 
   for _, intFile := range integrationFiles {
-    log.Printf("%s", intFile)
-    log.Println("-----")
+    if err := verifyExpectations(intFile.Expectations); err != nil {
+      log.Printf("ERROR verifying expectations in file %s (%s)", intFile.Name, err)
+      os.Exit(1)
+    }
+    log.Printf("----- Running %s -----", intFile.Name)
     for j, cmdStr := range intFile.Commands {
       cmd, err := createCmd(cmdStr)
       if err != nil {
@@ -58,6 +64,16 @@ func main() {
 
       log.Println("--> %s", string(out))
     }
+    for _, exp := range intFile.Expectations {
+
+    }
   }
 
+}
+
+func verifyExpectations(expectations []Expectation) error {
+  for _, expectation := range expectations {
+    //TODO: check here
+  }
+  return nil
 }

@@ -1,0 +1,14 @@
+version: 1
+name: git-push
+description: ensuring that 'git push deis master' exits 0
+commands:
+  - mkdir foo
+  - cd foo
+  - git init
+  - git remote add deis ssh://git@{{var "BUILDER_SERVER"}}:2222/{{var "APP_NAME"}}
+  - touch README
+  - echo "test data" >> README
+  - git push deis master
+expect:
+  - what: exitcode
+    value: 0

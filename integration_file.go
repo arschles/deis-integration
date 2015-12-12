@@ -1,9 +1,5 @@
 package main
 
-import (
-  "gopkg.in/yaml.v2"
-)
-
 type IntegrationFile struct {
   Version int `yaml:"version"`
   Name string `yaml:"name"`

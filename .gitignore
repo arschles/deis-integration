@@ -24,3 +24,5 @@ _testmain.go
 *.prof
 deis-integration
 foo
+rootfs/bin/boot
+vendor/

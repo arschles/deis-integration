@@ -9,13 +9,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"gopkg.in/yaml.v2"
-)
+	"github.com/arschles/deis-integration/config"
 
-var (
-	validExpectations = map[string]struct{}{
-		"exitcode": struct{}{},
-	}
+	"gopkg.in/v2/yaml"
 )
 
 func main() {
@@ -35,7 +31,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	integrationFiles := make([]IntegrationFile, len(fileNames))
+	integrationFiles := make([]config.IntegrationFile, len(fileNames))
 	for i, fileName := range fileNames {
 		fileBytes, err := ioutil.ReadFile(fileName)
 		if err != nil {
